@@ -8,7 +8,7 @@ export function request (app: App): ArkRequest {
     return new ArkRequest(app)
 }
 
-export const arktest = request
+export const httpest = request
 export default request
 
 export class ArkRequest implements PromiseLike<ArkResponse> {

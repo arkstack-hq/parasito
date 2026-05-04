@@ -1,26 +1,26 @@
-# Arktest
+# httpest
 
-[![NPM Downloads](https://img.shields.io/npm/dt/arktest.svg)](https://www.npmjs.com/package/arktest)
-[![npm version](https://img.shields.io/npm/v/arktest.svg)](https://www.npmjs.com/package/arktest)
-[![License](https://img.shields.io/npm/l/arktest.svg)](https://github.com/arkstack-hq/arktest/blob/main/LICENSE)
-[![codecov](https://codecov.io/gh/arkstack-hq/arktest/graph/badge.svg?token=ls1VVoFkYh)](https://codecov.io/gh/arkstack-hq/arktest)
-[![Test](https://github.com/arkstack-hq/arktest/actions/workflows/test.yml/badge.svg)](https://github.com/arkstack-hq/arktest/actions/workflows/test.yml)
-[![Publish to NPM](https://github.com/arkstack-hq/arktest/actions/workflows/publish.yml/badge.svg)](https://github.com/arkstack-hq/arktest/actions/workflows/publish.yml)
+[![NPM Downloads](https://img.shields.io/npm/dt/httpest.svg)](https://www.npmjs.com/package/httpest)
+[![npm version](https://img.shields.io/npm/v/httpest.svg)](https://www.npmjs.com/package/httpest)
+[![License](https://img.shields.io/npm/l/httpest.svg)](https://github.com/arkstack-hq/httpest/blob/main/LICENSE)
+[![codecov](https://codecov.io/gh/arkstack-hq/httpest/graph/badge.svg?token=ls1VVoFkYh)](https://codecov.io/gh/arkstack-hq/httpest)
+[![Test](https://github.com/arkstack-hq/httpest/actions/workflows/test.yml/badge.svg)](https://github.com/arkstack-hq/httpest/actions/workflows/test.yml)
+[![Publish to NPM](https://github.com/arkstack-hq/httpest/actions/workflows/publish.yml/badge.svg)](https://github.com/arkstack-hq/httpest/actions/workflows/publish.yml)
 
 Universal TypeScript-first HTTP testing for Node applications.
 
-arktest gives you one request API for framework apps, Node servers, and fetch-style handlers. Use it to test Express, Fastify, H3, Hono, plain Node handlers, already-listening servers, or remote URLs with the same fluent assertions.
+httpest gives you one request API for framework apps, Node servers, and fetch-style handlers. Use it to test Express, Fastify, H3, Hono, plain Node handlers, already-listening servers, or remote URLs with the same fluent assertions.
 
 ## Install
 
 ```sh
-pnpm add -D arktest
+pnpm add -D httpest
 ```
 
 ## Quick Start
 
 ```ts
-import request from 'arktest';
+import request from 'httpest';
 import express from 'express';
 
 const app = express();
@@ -74,7 +74,7 @@ Requests are promise-like, so you can `await` them directly. The resolved respon
 
 ```ts
 import { H3 } from 'h3';
-import request from 'arktest';
+import request from 'httpest';
 
 const app = new H3();
 
@@ -95,7 +95,7 @@ await request(app).get('/account').auth('token').expect(200).expect({
 
 ```ts
 import { Hono } from 'hono';
-import request from 'arktest';
+import request from 'httpest';
 
 const app = new Hono();
 
@@ -110,7 +110,7 @@ await request(app).get('/account').expect(200).expect({ ok: true });
 
 ```ts
 import fastify from 'fastify';
-import request from 'arktest';
+import request from 'httpest';
 
 const app = fastify();
 
@@ -132,7 +132,7 @@ try {
 ### Plain Node
 
 ```ts
-import request from 'arktest';
+import request from 'httpest';
 
 await request((_incoming, outgoing) => {
   outgoing.setHeader('content-type', 'application/json');
@@ -148,7 +148,7 @@ await request((_incoming, outgoing) => {
 Use a string URL when the service is already running outside the current test process.
 
 ```ts
-import request from 'arktest';
+import request from 'httpest';
 
 await request('https://api.example.com')
   .get('/health')
@@ -159,7 +159,7 @@ await request('https://api.example.com')
 `URL` objects are supported too.
 
 ```ts
-import request from 'arktest';
+import request from 'httpest';
 
 const api = new URL('https://api.example.com');
 

@@ -1,5 +1,5 @@
 {
-    "name": "arktest",
+    "name": "httpest",
     "version": "0.1.0",
     "description": "Universal TypeScript-first HTTP testing library for Express, Fastify, H3, Hono, Node servers, and fetch-style apps.",
     "type": "module",
@@ -22,14 +22,13 @@
         },
         "./package.json": "./package.json"
     },
-    "homepage": "https://arkstack-hq.github.io/arktest",
+    "homepage": "https://arkstack-hq.github.io/httpest",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/arkstack-hq/arktest.git"
+        "url": "git+https://github.com/arkstack-hq/httpest.git"
     },
     "keywords": [
         "testing",
-        "arkstack",
         "modern",
         "web",
         "framework",
