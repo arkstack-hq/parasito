@@ -1,4 +1,4 @@
-# parasito
+# Parasito
 
 [![NPM Downloads](https://img.shields.io/npm/dt/parasito.svg)](https://www.npmjs.com/package/parasito)
 [![npm version](https://img.shields.io/npm/v/parasito.svg)](https://www.npmjs.com/package/parasito)
@@ -9,7 +9,7 @@
 
 Universal TypeScript-first HTTP testing library for Node applications.
 
-parasito attaches one request API to framework apps, Node servers, and fetch-style handlers. Use it to test Express, Fastify, H3, Hono, plain Node handlers, already-listening servers, or remote URLs with the same fluent assertions.
+Parasito attaches one request API to framework apps, Node servers, and fetch-style handlers. Use it to test Express, Fastify, H3, Hono, plain Node handlers, already-listening servers, or remote URLs with the same fluent assertions.
 
 ## Install
 
