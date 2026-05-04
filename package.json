@@ -22,7 +22,7 @@
         },
         "./package.json": "./package.json"
     },
-    "homepage": "https://arkstack-hq.github.io/parasito",
+    "homepage": "https://github.com/arkstack-hq/parasito",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/arkstack-hq/parasito.git"
