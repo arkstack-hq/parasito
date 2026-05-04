@@ -1,0 +1,23 @@
+{
+  "$schema": "node_modules/barrelize/schema.json",
+  "semi": false,
+  "barrels": [
+    {
+      "root": "src",
+      "name": "index.ts",
+      "include": [
+        "**/*.ts"
+      ],
+      "exclude": [
+        "index.ts",
+        "**/*.test.ts"
+      ],
+      "exports": {
+        "request.ts": [
+          "*",
+          "default"
+        ]
+      }
+    }
+  ]
+}
