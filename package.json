@@ -1,6 +1,6 @@
 {
     "name": "parasito",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Universal TypeScript-first HTTP testing library for Express, Fastify, H3, Hono, Node servers, and fetch-style apps.",
     "type": "module",
     "files": [
@@ -34,6 +34,8 @@
         "framework",
         "nodejs",
         "typescript",
+        "supertest",
+        "superagent",
         "laravel",
         "requests",
         "api",
@@ -41,7 +43,10 @@
         "test",
         "assertions",
         "mocks",
-        "stubs"
+        "stubs",
+        "http",
+        "https",
+        "pets"
     ],
     "scripts": {
         "lint": "eslint",
