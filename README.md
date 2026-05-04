@@ -4,7 +4,7 @@
 [![npm version](https://img.shields.io/npm/v/arktest.svg)](https://www.npmjs.com/package/arktest)
 [![License](https://img.shields.io/npm/l/arktest.svg)](https://github.com/arkstack-hq/arktest/blob/main/LICENSE)
 [![codecov](https://codecov.io/gh/arkstack-hq/arktest/graph/badge.svg?token=ls1VVoFkYh)](https://codecov.io/gh/arkstack-hq/arktest)
-[![CI](https://github.com/arkstack-hq/arktest/actions/workflows/ci.yml/badge.svg)](https://github.com/arkstack-hq/arktest/actions/workflows/ci.yml)
+[![Test](https://github.com/arkstack-hq/arktest/actions/workflows/test.yml/badge.svg)](https://github.com/arkstack-hq/arktest/actions/workflows/test.yml)
 [![Deploy Documentation](https://github.com/arkstack-hq/arktest/actions/workflows/deploy-docs.yml/badge.svg)](https://github.com/arkstack-hq/arktest/actions/workflows/deploy-docs.yml)
 [![Publish to NPM](https://github.com/arkstack-hq/arktest/actions/workflows/publish.yml/badge.svg)](https://github.com/arkstack-hq/arktest/actions/workflows/publish.yml)
 
@@ -142,6 +142,33 @@ await request((_incoming, outgoing) => {
   .get('/health')
   .expect(200)
   .expect({ ok: true });
+```
+
+### Remote URLs
+
+Use a string URL when the service is already running outside the current test process.
+
+```ts
+import request from 'arktest';
+
+await request('https://api.example.com')
+  .get('/health')
+  .expect(200)
+  .expect({ ok: true });
+```
+
+`URL` objects are supported too.
+
+```ts
+import request from 'arktest';
+
+const api = new URL('https://api.example.com');
+
+await request(api)
+  .post('/account')
+  .auth('token')
+  .send({ name: 'Ada' })
+  .expect(201);
 ```
 
 ## Development
