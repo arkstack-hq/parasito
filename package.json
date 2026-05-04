@@ -46,7 +46,7 @@
         "stubs",
         "http",
         "https",
-        "pets"
+        "pest"
     ],
     "scripts": {
         "lint": "eslint",
