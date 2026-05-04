@@ -5,7 +5,6 @@
 [![License](https://img.shields.io/npm/l/arktest.svg)](https://github.com/arkstack-hq/arktest/blob/main/LICENSE)
 [![codecov](https://codecov.io/gh/arkstack-hq/arktest/graph/badge.svg?token=ls1VVoFkYh)](https://codecov.io/gh/arkstack-hq/arktest)
 [![Test](https://github.com/arkstack-hq/arktest/actions/workflows/test.yml/badge.svg)](https://github.com/arkstack-hq/arktest/actions/workflows/test.yml)
-[![Deploy Documentation](https://github.com/arkstack-hq/arktest/actions/workflows/deploy-docs.yml/badge.svg)](https://github.com/arkstack-hq/arktest/actions/workflows/deploy-docs.yml)
 [![Publish to NPM](https://github.com/arkstack-hq/arktest/actions/workflows/publish.yml/badge.svg)](https://github.com/arkstack-hq/arktest/actions/workflows/publish.yml)
 
 Universal TypeScript-first HTTP testing for Node applications.
