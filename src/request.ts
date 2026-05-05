@@ -1,17 +1,17 @@
-import type { App, ArkResponse, Body, Expectation, HeaderValue, Method, RequestState } from './types'
+import type { App, ParasitoResponse, Body, Expectation, HeaderValue, Method, RequestState } from './types'
 import { formatExpected, isJsonBody, matches } from './helpers'
 
 import { dispatch } from './dispatch'
 import { jsonContentType } from './constants'
 
-export function request (app: App): ArkRequest {
-    return new ArkRequest(app)
+export function request (app: App): ParasitoRequest {
+    return new ParasitoRequest(app)
 }
 
 export const parasito = request
 export default request
 
-export class ArkRequest implements PromiseLike<ArkResponse> {
+export class ParasitoRequest implements PromiseLike<ParasitoResponse> {
     private readonly expectations: Expectation[] = []
     private readonly state: RequestState
 
@@ -187,7 +187,7 @@ export class ArkRequest implements PromiseLike<ArkResponse> {
         return this
     }
 
-    public async end (callback?: (error: Error | null, response?: ArkResponse) => void): Promise<ArkResponse | void> {
+    public async end (callback?: (error: Error | null, response?: ParasitoResponse) => void): Promise<ParasitoResponse | void> {
         try {
             const response = await this.run()
 
@@ -209,14 +209,14 @@ export class ArkRequest implements PromiseLike<ArkResponse> {
         }
     }
 
-    public then<TResult1 = ArkResponse, TResult2 = never> (
-        onfulfilled?: ((value: ArkResponse) => TResult1 | PromiseLike<TResult1>) | null,
+    public then<TResult1 = ParasitoResponse, TResult2 = never> (
+        onfulfilled?: ((value: ParasitoResponse) => TResult1 | PromiseLike<TResult1>) | null,
         onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null,
     ): PromiseLike<TResult1 | TResult2> {
         return this.run().then(onfulfilled, onrejected)
     }
 
-    private async run (): Promise<ArkResponse> {
+    private async run (): Promise<ParasitoResponse> {
         const response = await dispatch(this.app, this.state)
 
         for (const expectation of this.expectations) {

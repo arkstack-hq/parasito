@@ -1,4 +1,4 @@
-import type { ArkResponse, RequestState } from './types'
+import type { ParasitoResponse, RequestState } from './types'
 
 import type { AddressInfo } from 'node:net'
 import type { Server } from 'node:http'
@@ -6,7 +6,7 @@ import { createUrl } from './fetch'
 import { normalizeSuperAgentResponse } from './response'
 import superagent from 'superagent'
 
-export async function requestWithServer (server: Server, state: RequestState): Promise<ArkResponse> {
+export async function requestWithServer (server: Server, state: RequestState): Promise<ParasitoResponse> {
     if (server.listening) {
         const address = server.address()
 
@@ -18,7 +18,7 @@ export async function requestWithServer (server: Server, state: RequestState): P
     return requestWithTemporaryServer(server, state)
 }
 
-export async function requestWithTemporaryServer (server: Server, state: RequestState): Promise<ArkResponse> {
+export async function requestWithTemporaryServer (server: Server, state: RequestState): Promise<ParasitoResponse> {
     await new Promise<void>((resolve, reject) => {
         server.once('error', reject)
         server.listen(0, '127.0.0.1', () => {
@@ -46,7 +46,7 @@ export async function requestWithTemporaryServer (server: Server, state: Request
     }
 }
 
-export async function requestWithSuperAgent (baseUrl: string, state: RequestState): Promise<ArkResponse> {
+export async function requestWithSuperAgent (baseUrl: string, state: RequestState): Promise<ParasitoResponse> {
     const url = createUrl(baseUrl, state)
     let agentRequest = superagent(state.method, url)
 

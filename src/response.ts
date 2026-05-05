@@ -1,9 +1,9 @@
-import type { ArkResponse, HeaderMap } from './types'
+import type { ParasitoResponse, HeaderMap } from './types'
 
 import type { Response as SuperAgentResponse } from 'superagent'
 import { parseBody } from './helpers'
 
-export async function normalizeFetchResponse (response: Response): Promise<ArkResponse> {
+export async function normalizeFetchResponse (response: Response): Promise<ParasitoResponse> {
     const text = await response.text()
     const header = headersToObject(response.headers)
 
@@ -19,7 +19,7 @@ export async function normalizeFetchResponse (response: Response): Promise<ArkRe
     }
 }
 
-export function normalizeSuperAgentResponse (response: SuperAgentResponse): ArkResponse {
+export function normalizeSuperAgentResponse (response: SuperAgentResponse): ParasitoResponse {
     return {
         body: response.body ?? parseBody(response.text, response.header['content-type']),
         header: response.header,

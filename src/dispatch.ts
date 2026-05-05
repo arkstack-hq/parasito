@@ -1,11 +1,11 @@
-import type { App, ArkResponse, NodeHandler, RequestState } from './types'
+import type { App, ParasitoResponse, NodeHandler, RequestState } from './types'
 import { createFetchRequest, createNodeServer } from './fetch'
 import { isFastifyApp, isFetchApp, isNodeHandler, isServer } from './guards'
 import { requestWithServer, requestWithSuperAgent, requestWithTemporaryServer } from './adapters'
 
 import { normalizeFetchResponse } from './response'
 
-export async function dispatch (app: App, state: RequestState): Promise<ArkResponse> {
+export async function dispatch (app: App, state: RequestState): Promise<ParasitoResponse> {
     if (isFetchApp(app)) {
         const response = await app.fetch(createFetchRequest(state))
 

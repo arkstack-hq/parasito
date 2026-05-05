@@ -24,7 +24,7 @@ export type App =
         fetch: FetchLike
     }
 
-export interface ArkResponse {
+export interface ParasitoResponse {
     status: number
     statusCode: number
     ok: boolean
@@ -35,7 +35,7 @@ export interface ArkResponse {
     raw: Response | SuperAgentResponse
 }
 
-export type Expectation = (response: ArkResponse) => void | Promise<void>
+export type Expectation = (response: ParasitoResponse) => void | Promise<void>
 
 export interface RequestState {
     body?: Body
