@@ -1,4 +1,5 @@
 import type { IncomingMessage, Server, ServerResponse } from 'node:http'
+
 import type { Response as SuperAgentResponse } from 'superagent'
 
 export type HeaderValue = string | number | boolean
@@ -24,18 +25,18 @@ export type App =
         fetch: FetchLike
     }
 
-export interface ParasitoResponse {
+export interface PResponse<TBody = any> {
     status: number
     statusCode: number
     ok: boolean
     headers: Headers
     header: HeaderMap
     text: string
-    body: unknown
+    body: TBody
     raw: Response | SuperAgentResponse
 }
 
-export type Expectation = (response: ParasitoResponse) => void | Promise<void>
+export type Expectation<TBody = any> = (response: PResponse<TBody>) => void | Promise<void>
 
 export interface RequestState {
     body?: Body

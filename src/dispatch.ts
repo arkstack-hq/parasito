@@ -1,4 +1,4 @@
-import type { App, ParasitoResponse, NodeHandler, RequestState } from './types'
+import type { App, PResponse, NodeHandler, RequestState } from './types'
 import { createFetchRequest, createNodeServer } from './fetch'
 import { isFastifyApp, isFetchApp, isNodeHandler, isServer } from './guards'
 import { requestWithServer, requestWithSuperAgent, requestWithTemporaryServer } from './adapters'
@@ -12,32 +12,32 @@ import { normalizeFetchResponse } from './response'
  * @param state - Internal request state to dispatch.
  * @returns Normalized response from the selected adapter.
  */
-export async function dispatch (app: App, state: RequestState): Promise<ParasitoResponse> {
+export async function dispatch<TBody = any> (app: App, state: RequestState): Promise<PResponse<TBody>> {
     if (isFetchApp(app)) {
         const response = await app.fetch(createFetchRequest(state))
 
-        return normalizeFetchResponse(response)
+        return normalizeFetchResponse<TBody>(response)
     }
 
     if (typeof app === 'function' && !isNodeHandler(app)) {
         const response = await app(createFetchRequest(state))
 
-        return normalizeFetchResponse(response)
+        return normalizeFetchResponse<TBody>(response)
     }
 
     if (typeof app === 'string' || app instanceof URL) {
-        return requestWithSuperAgent(String(app), state)
+        return requestWithSuperAgent<TBody>(String(app), state)
     }
 
     if (isFastifyApp(app)) {
         await app.ready()
 
-        return requestWithServer(app.server, state)
+        return requestWithServer<TBody>(app.server, state)
     }
 
     if (isServer(app)) {
-        return requestWithServer(app, state)
+        return requestWithServer<TBody>(app, state)
     }
 
-    return requestWithTemporaryServer(createNodeServer(app as NodeHandler), state)
+    return requestWithTemporaryServer<TBody>(createNodeServer(app as NodeHandler), state)
 }

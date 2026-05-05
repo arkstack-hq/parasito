@@ -1,4 +1,4 @@
-import type { HeaderMap, ParasitoResponse } from './types'
+import type { HeaderMap, PResponse } from './types'
 
 import type { Response as SuperAgentResponse } from 'superagent'
 import { parseBody } from './helpers'
@@ -9,14 +9,14 @@ import { parseBody } from './helpers'
  * @param response - Fetch API response to normalize.
  * @returns Normalized Parasito response.
  */
-export async function normalizeFetchResponse (
+export async function normalizeFetchResponse<TBody = any> (
     response: Response
-): Promise<ParasitoResponse> {
+): Promise<PResponse<TBody>> {
     const text = await response.text()
     const header = headersToObject(response.headers)
 
     return {
-        body: parseBody(text, header['content-type']),
+        body: parseBody(text, header['content-type']) as TBody,
         header,
         headers: response.headers,
         ok: response.ok,
@@ -33,11 +33,11 @@ export async function normalizeFetchResponse (
  * @param response - SuperAgent response to normalize.
  * @returns Normalized Parasito response.
  */
-export function normalizeSuperAgentResponse (
+export function normalizeSuperAgentResponse<TBody = any> (
     response: SuperAgentResponse
-): ParasitoResponse {
+): PResponse<TBody> {
     return {
-        body: response.body ?? parseBody(response.text, response.header['content-type']),
+        body: (response.body ?? parseBody(response.text, response.header['content-type'])) as TBody,
         header: response.header,
         headers: objectToHeaders(response.header),
         ok: response.ok,

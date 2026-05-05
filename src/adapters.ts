@@ -1,4 +1,4 @@
-import type { ParasitoResponse, RequestState } from './types'
+import type { PResponse, RequestState } from './types'
 
 import type { AddressInfo } from 'node:net'
 import type { Server } from 'node:http'
@@ -13,19 +13,19 @@ import superagent from 'superagent'
  * @param state - Internal request state to dispatch.
  * @returns Normalized response from the server.
  */
-export async function requestWithServer (
+export async function requestWithServer<TBody = any> (
     server: Server,
     state: RequestState
-): Promise<ParasitoResponse> {
+): Promise<PResponse<TBody>> {
     if (server.listening) {
         const address = server.address()
 
         if (typeof address === 'object' && address !== null) {
-            return requestWithSuperAgent(`http://127.0.0.1:${address.port}`, state)
+            return requestWithSuperAgent<TBody>(`http://127.0.0.1:${address.port}`, state)
         }
     }
 
-    return requestWithTemporaryServer(server, state)
+    return requestWithTemporaryServer<TBody>(server, state)
 }
 
 /**
@@ -35,10 +35,10 @@ export async function requestWithServer (
  * @param state - Internal request state to dispatch.
  * @returns Normalized response from the temporary server.
  */
-export async function requestWithTemporaryServer (
+export async function requestWithTemporaryServer<TBody = any> (
     server: Server,
     state: RequestState
-): Promise<ParasitoResponse> {
+): Promise<PResponse<TBody>> {
     await new Promise<void>((resolve, reject) => {
         server.once('error', reject)
         server.listen(0, '127.0.0.1', () => {
@@ -50,7 +50,7 @@ export async function requestWithTemporaryServer (
     try {
         const address = server.address() as AddressInfo
 
-        return await requestWithSuperAgent(`http://127.0.0.1:${address.port}`, state)
+        return await requestWithSuperAgent<TBody>(`http://127.0.0.1:${address.port}`, state)
     } finally {
         await new Promise<void>((resolve, reject) => {
             server.close((error) => {
@@ -73,10 +73,10 @@ export async function requestWithTemporaryServer (
  * @param state - Internal request state to dispatch.
  * @returns Normalized SuperAgent response.
  */
-export async function requestWithSuperAgent (
+export async function requestWithSuperAgent<TBody = any> (
     baseUrl: string,
     state: RequestState
-): Promise<ParasitoResponse> {
+): Promise<PResponse<TBody>> {
     const url = createUrl(baseUrl, state)
     let agentRequest = superagent(state.method, url)
 
@@ -92,5 +92,5 @@ export async function requestWithSuperAgent (
 
     const response = await agentRequest
 
-    return normalizeSuperAgentResponse(response)
+    return normalizeSuperAgentResponse<TBody>(response)
 }

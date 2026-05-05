@@ -1,4 +1,4 @@
-import type { App, Body, Expectation, HeaderValue, Method, ParasitoResponse, RequestState } from './types'
+import type { App, Body, Expectation, HeaderValue, Method, PResponse, RequestState } from './types'
 import { formatExpected, isJsonBody, matches } from './helpers'
 
 import { dispatch } from './dispatch'
@@ -10,8 +10,8 @@ import { jsonContentType } from './constants'
  * @param app - Target application, server, handler, or remote URL to test.
  * @returns A fluent request builder bound to the provided target.
  */
-export function request (app: App): ParasitoRequest {
-    return new ParasitoRequest(app)
+export function request<TBody = any> (app: App): PRequest<TBody> {
+    return new PRequest<TBody>(app)
 }
 
 export const parasito = request
@@ -20,8 +20,8 @@ export default request
 /**
  * Fluent HTTP request builder that can be awaited like a promise.
  */
-export class ParasitoRequest implements PromiseLike<ParasitoResponse> {
-    private readonly expectations: Expectation[] = []
+export class PRequest<TBody = any> implements PromiseLike<PResponse<TBody>> {
+    private readonly expectations: Array<Expectation<TBody>> = []
     private readonly state: RequestState
 
     /**
@@ -269,7 +269,7 @@ export class ParasitoRequest implements PromiseLike<ParasitoResponse> {
      * @param assertion - Function that validates the normalized response.
      * @returns The current request builder.
      */
-    public expect (assertion: Expectation): this;
+    public expect (assertion: Expectation<TBody>): this;
     /**
      * Registers a response expectation.
      *
@@ -278,7 +278,7 @@ export class ParasitoRequest implements PromiseLike<ParasitoResponse> {
      * @returns The current request builder.
      */
     public expect (
-        first: number | string | RegExp | Record<string, unknown> | unknown[] | Expectation,
+        first: number | string | RegExp | Record<string, unknown> | unknown[] | Expectation<TBody>,
         second?: string | RegExp
     ): this {
         if (typeof first === 'function') {
@@ -342,8 +342,8 @@ export class ParasitoRequest implements PromiseLike<ParasitoResponse> {
      * @returns The response when no callback is provided.
      */
     public async end (
-        callback?: (error: Error | null, response?: ParasitoResponse) => void
-    ): Promise<ParasitoResponse | void> {
+        callback?: (error: Error | null, response?: PResponse<TBody>) => void
+    ): Promise<PResponse<TBody> | void> {
         try {
             const response = await this.run()
 
@@ -372,8 +372,8 @@ export class ParasitoRequest implements PromiseLike<ParasitoResponse> {
      * @param onrejected - Handler called when dispatch or expectations fail.
      * @returns A promise-like value for the request result.
      */
-    public then<TResult1 = ParasitoResponse, TResult2 = never> (
-        onfulfilled?: ((value: ParasitoResponse) => TResult1 | PromiseLike<TResult1>) | null,
+    public then<TResult1 = PResponse<TBody>, TResult2 = never> (
+        onfulfilled?: ((value: PResponse<TBody>) => TResult1 | PromiseLike<TResult1>) | null,
         onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null,
     ): PromiseLike<TResult1 | TResult2> {
         return this.run().then(onfulfilled, onrejected)
@@ -384,8 +384,8 @@ export class ParasitoRequest implements PromiseLike<ParasitoResponse> {
      *
      * @returns The normalized response after all expectations pass.
      */
-    private async run (): Promise<ParasitoResponse> {
-        const response = await dispatch(this.app, this.state)
+    private async run (): Promise<PResponse<TBody>> {
+        const response = await dispatch<TBody>(this.app, this.state)
 
         for (const expectation of this.expectations) {
             await expectation(response)
