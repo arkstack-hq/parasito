@@ -1,6 +1,6 @@
-import type { App, PResponse, NodeHandler, RequestState } from './types'
+import type { App, NodeHandler, PResponse, RequestState } from './types'
 import { createFetchRequest, createNodeServer } from './fetch'
-import { isFastifyApp, isFetchApp, isNodeHandler, isServer } from './guards'
+import { isFastifyApp, isFetchApp, isKoaApp, isNodeHandler, isServer } from './guards'
 import { requestWithServer, requestWithSuperAgent, requestWithTemporaryServer } from './adapters'
 
 import { normalizeFetchResponse } from './response'
@@ -12,7 +12,10 @@ import { normalizeFetchResponse } from './response'
  * @param state - Internal request state to dispatch.
  * @returns Normalized response from the selected adapter.
  */
-export async function dispatch<TBody = any> (app: App, state: RequestState): Promise<PResponse<TBody>> {
+export async function dispatch<TBody = any> (
+    app: App,
+    state: RequestState
+): Promise<PResponse<TBody>> {
     if (isFetchApp(app)) {
         const response = await app.fetch(createFetchRequest(state))
 
@@ -33,6 +36,10 @@ export async function dispatch<TBody = any> (app: App, state: RequestState): Pro
         await app.ready()
 
         return requestWithServer<TBody>(app.server, state)
+    }
+
+    if (isKoaApp(app)) {
+        return requestWithTemporaryServer<TBody>(createNodeServer(app.callback()), state)
     }
 
     if (isServer(app)) {

@@ -1,4 +1,4 @@
-import type { App, FastifyLike, FetchLike, NodeHandler } from './types'
+import type { App, FastifyLike, FetchLike, KoaLike, NodeHandler } from './types'
 
 import type { Server } from 'node:http'
 
@@ -30,6 +30,16 @@ export function isServer (app: App): app is Server {
  */
 export function isFastifyApp (app: App): app is FastifyLike {
     return typeof app === 'object' && app !== null && 'ready' in app && typeof app.ready === 'function' && 'server' in app && isServer(app.server)
+}
+
+/**
+ * Checks whether an app exposes a Koa-style callback() handler factory.
+ *
+ * @param app - App target to inspect.
+ * @returns True when the app has a callable callback method.
+ */
+export function isKoaApp (app: App): app is KoaLike {
+    return typeof app === 'object' && app !== null && 'callback' in app && typeof app.callback === 'function'
 }
 
 /**

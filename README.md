@@ -9,7 +9,7 @@
 
 Universal TypeScript-first HTTP testing library for Node applications.
 
-Parasito attaches one request API to framework apps, Node servers, and fetch-style handlers. Use it to test Express, Fastify, H3, Hono, plain Node handlers, already-listening servers, or remote URLs with the same fluent assertions.
+Parasito attaches one request API to framework apps, Node servers, and fetch-style handlers. Use it to test Express, Fastify, H3, Hono, Koa, plain Node handlers, already-listening servers, or remote URLs with the same fluent assertions.
 
 ## Install
 
@@ -38,6 +38,7 @@ await request(app).get('/account').expect(200).expect({ ok: true });
 - Fastify instances
 - H3 apps
 - Hono apps
+- Koa apps
 - Plain Node request handlers
 - Node `http.Server` instances
 - Fetch-style functions and objects with a `fetch(request)` method
@@ -127,6 +128,21 @@ try {
 } finally {
   await app.close();
 }
+```
+
+### Koa
+
+```ts
+import Koa from 'koa';
+import request from 'parasito';
+
+const app = new Koa();
+
+app.use((context) => {
+  context.body = { ok: true };
+});
+
+await request(app).get('/account').expect(200).expect({ ok: true });
 ```
 
 ### Plain Node

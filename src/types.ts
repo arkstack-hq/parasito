@@ -14,11 +14,16 @@ export interface FastifyLike {
     server: Server
 }
 
+export interface KoaLike {
+    callback: () => NodeHandler
+}
+
 export type App =
     | string
     | URL
     | Server
     | FastifyLike
+    | KoaLike
     | NodeHandler
     | FetchLike
     | {
