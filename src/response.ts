@@ -1,9 +1,17 @@
-import type { ParasitoResponse, HeaderMap } from './types'
+import type { HeaderMap, ParasitoResponse } from './types'
 
 import type { Response as SuperAgentResponse } from 'superagent'
 import { parseBody } from './helpers'
 
-export async function normalizeFetchResponse (response: Response): Promise<ParasitoResponse> {
+/**
+ * Converts a Fetch API response into Parasito's normalized response shape.
+ *
+ * @param response - Fetch API response to normalize.
+ * @returns Normalized Parasito response.
+ */
+export async function normalizeFetchResponse (
+    response: Response
+): Promise<ParasitoResponse> {
     const text = await response.text()
     const header = headersToObject(response.headers)
 
@@ -19,7 +27,15 @@ export async function normalizeFetchResponse (response: Response): Promise<Paras
     }
 }
 
-export function normalizeSuperAgentResponse (response: SuperAgentResponse): ParasitoResponse {
+/**
+ * Converts a SuperAgent response into Parasito's normalized response shape.
+ *
+ * @param response - SuperAgent response to normalize.
+ * @returns Normalized Parasito response.
+ */
+export function normalizeSuperAgentResponse (
+    response: SuperAgentResponse
+): ParasitoResponse {
     return {
         body: response.body ?? parseBody(response.text, response.header['content-type']),
         header: response.header,
@@ -32,6 +48,12 @@ export function normalizeSuperAgentResponse (response: SuperAgentResponse): Para
     }
 }
 
+/**
+ * Converts Web Headers into Parasito's lower-cased header map.
+ *
+ * @param headers - Headers object to convert.
+ * @returns Plain object keyed by lower-cased header names.
+ */
 function headersToObject (headers: Headers): HeaderMap {
     const output: HeaderMap = {}
 
@@ -42,6 +64,12 @@ function headersToObject (headers: Headers): HeaderMap {
     return output
 }
 
+/**
+ * Converts Parasito's plain header map into Web Headers.
+ *
+ * @param headers - Plain header map to convert.
+ * @returns Web Headers object.
+ */
 function objectToHeaders (headers: HeaderMap): Headers {
     const output = new Headers()
 

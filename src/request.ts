@@ -1,9 +1,15 @@
-import type { App, ParasitoResponse, Body, Expectation, HeaderValue, Method, RequestState } from './types'
+import type { App, Body, Expectation, HeaderValue, Method, ParasitoResponse, RequestState } from './types'
 import { formatExpected, isJsonBody, matches } from './helpers'
 
 import { dispatch } from './dispatch'
 import { jsonContentType } from './constants'
 
+/**
+ * Creates a new request builder for an application, server, handler, or remote URL.
+ *
+ * @param app - Target application, server, handler, or remote URL to test.
+ * @returns A fluent request builder bound to the provided target.
+ */
 export function request (app: App): ParasitoRequest {
     return new ParasitoRequest(app)
 }
@@ -11,10 +17,20 @@ export function request (app: App): ParasitoRequest {
 export const parasito = request
 export default request
 
+/**
+ * Fluent HTTP request builder that can be awaited like a promise.
+ */
 export class ParasitoRequest implements PromiseLike<ParasitoResponse> {
     private readonly expectations: Expectation[] = []
     private readonly state: RequestState
 
+    /**
+     * Creates a request builder with an initial method and path.
+     *
+     * @param app - Target application, server, handler, or remote URL to test.
+     * @param method - Initial HTTP method for the request.
+     * @param path - Initial request path.
+     */
     public constructor(private readonly app: App, method: Method = 'GET', path = '/') {
         this.state = {
             headers: new Headers(),
@@ -24,34 +40,83 @@ export class ParasitoRequest implements PromiseLike<ParasitoResponse> {
         }
     }
 
+    /**
+     * Sets the request method to GET and updates the target path.
+     *
+     * @param path - Request path to call.
+     * @returns The current request builder.
+     */
     public get (path: string): this {
         return this.method('GET', path)
     }
 
+    /**
+     * Sets the request method to POST and updates the target path.
+     *
+     * @param path - Request path to call.
+     * @returns The current request builder.
+     */
     public post (path: string): this {
         return this.method('POST', path)
     }
 
+    /**
+     * Sets the request method to PUT and updates the target path.
+     *
+     * @param path - Request path to call.
+     * @returns The current request builder.
+     */
     public put (path: string): this {
         return this.method('PUT', path)
     }
 
+    /**
+     * Sets the request method to PATCH and updates the target path.
+     *
+     * @param path - Request path to call.
+     * @returns The current request builder.
+     */
     public patch (path: string): this {
         return this.method('PATCH', path)
     }
 
+    /**
+     * Sets the request method to DELETE and updates the target path.
+     *
+     * @param path - Request path to call.
+     * @returns The current request builder.
+     */
     public delete (path: string): this {
         return this.method('DELETE', path)
     }
 
+    /**
+     * Sets the request method to HEAD and updates the target path.
+     *
+     * @param path - Request path to call.
+     * @returns The current request builder.
+     */
     public head (path: string): this {
         return this.method('HEAD', path)
     }
 
+    /**
+     * Sets the request method to OPTIONS and updates the target path.
+     *
+     * @param path - Request path to call.
+     * @returns The current request builder.
+     */
     public options (path: string): this {
         return this.method('OPTIONS', path)
     }
 
+    /**
+     * Sets the HTTP method and path for the request.
+     *
+     * @param method - HTTP method to use.
+     * @param path - Request path to call.
+     * @returns The current request builder.
+     */
     public method (method: Method, path: string): this {
         this.state.method = method
         this.state.path = path
@@ -59,6 +124,13 @@ export class ParasitoRequest implements PromiseLike<ParasitoResponse> {
         return this
     }
 
+    /**
+     * Sets one header or merges a map of headers into the request.
+     *
+     * @param field - Header name or map of header names to values.
+     * @param value - Header value when setting a single header.
+     * @returns The current request builder.
+     */
     public set (field: string | Record<string, HeaderValue>, value?: HeaderValue): this {
         if (typeof field === 'string') {
             if (value === undefined) {
@@ -77,9 +149,36 @@ export class ParasitoRequest implements PromiseLike<ParasitoResponse> {
         return this
     }
 
+    /**
+     * Sets a bearer authorization header.
+     *
+     * @param token - Bearer token to send.
+     * @param options - Optional bearer auth settings.
+     * @returns The current request builder.
+     */
     public auth (token: string, options?: { type?: 'bearer' }): this;
+    /**
+     * Sets a basic authorization header.
+     *
+     * @param username - Basic auth username.
+     * @param password - Basic auth password.
+     * @param options - Optional basic auth settings.
+     * @returns The current request builder.
+     */
     public auth (username: string, password: string, options?: { type?: 'basic' }): this;
-    public auth (usernameOrToken: string, passwordOrOptions?: string | { type?: 'bearer' }, _options?: { type?: 'basic' }): this {
+    /**
+     * Sets the authorization header using bearer or basic credentials.
+     *
+     * @param usernameOrToken - Bearer token or basic auth username.
+     * @param passwordOrOptions - Basic auth password or bearer auth options.
+     * @param _options - Optional basic auth settings.
+     * @returns The current request builder.
+     */
+    public auth (
+        usernameOrToken: string,
+        passwordOrOptions?: string | { type?: 'bearer' },
+        _options?: { type?: 'basic' }
+    ): this {
         if (typeof passwordOrOptions === 'string') {
             const value = Buffer.from(`${usernameOrToken}:${passwordOrOptions}`).toString('base64')
             this.state.headers.set('authorization', `Basic ${value}`)
@@ -92,7 +191,15 @@ export class ParasitoRequest implements PromiseLike<ParasitoResponse> {
         return this
     }
 
-    public query (value: string | URLSearchParams | Record<string, HeaderValue | Array<HeaderValue>>): this {
+    /**
+     * Adds query parameters from a query string, URLSearchParams, or object.
+     *
+     * @param value - Query data to merge into the request URL.
+     * @returns The current request builder.
+     */
+    public query (
+        value: string | URLSearchParams | Record<string, HeaderValue | Array<HeaderValue>>
+    ): this {
         const query = typeof value === 'string' ? new URLSearchParams(value) : new URLSearchParams()
 
         if (value instanceof URLSearchParams) {
@@ -118,6 +225,12 @@ export class ParasitoRequest implements PromiseLike<ParasitoResponse> {
         return this
     }
 
+    /**
+     * Sets the request body and applies a JSON content type for plain objects and arrays.
+     *
+     * @param body - Request body payload to send.
+     * @returns The current request builder.
+     */
     public send (body: Body): this {
         this.state.body = body
 
@@ -128,11 +241,46 @@ export class ParasitoRequest implements PromiseLike<ParasitoResponse> {
         return this
     }
 
+    /**
+     * Expects the response status code to match.
+     *
+     * @param status - Expected response status code.
+     * @returns The current request builder.
+     */
     public expect (status: number): this;
+    /**
+     * Expects the response body or text to match.
+     *
+     * @param body - Expected response body, text, or text pattern.
+     * @returns The current request builder.
+     */
     public expect (body: string | RegExp | Record<string, unknown> | unknown[]): this;
+    /**
+     * Expects a response header to match a string or regular expression.
+     *
+     * @param field - Header field name to check.
+     * @param value - Expected header value or pattern.
+     * @returns The current request builder.
+     */
     public expect (field: string, value: string | RegExp): this;
+    /**
+     * Registers a custom response assertion.
+     *
+     * @param assertion - Function that validates the normalized response.
+     * @returns The current request builder.
+     */
     public expect (assertion: Expectation): this;
-    public expect (first: number | string | RegExp | Record<string, unknown> | unknown[] | Expectation, second?: string | RegExp): this {
+    /**
+     * Registers a response expectation.
+     *
+     * @param first - Status, body, text, header field, or custom assertion expectation.
+     * @param second - Header value expectation when checking a header field.
+     * @returns The current request builder.
+     */
+    public expect (
+        first: number | string | RegExp | Record<string, unknown> | unknown[] | Expectation,
+        second?: string | RegExp
+    ): this {
         if (typeof first === 'function') {
             this.expectations.push(first)
 
@@ -187,7 +335,15 @@ export class ParasitoRequest implements PromiseLike<ParasitoResponse> {
         return this
     }
 
-    public async end (callback?: (error: Error | null, response?: ParasitoResponse) => void): Promise<ParasitoResponse | void> {
+    /**
+     * Executes the request and optionally reports completion through a callback.
+     *
+     * @param callback - Optional Node-style callback for completion.
+     * @returns The response when no callback is provided.
+     */
+    public async end (
+        callback?: (error: Error | null, response?: ParasitoResponse) => void
+    ): Promise<ParasitoResponse | void> {
         try {
             const response = await this.run()
 
@@ -209,6 +365,13 @@ export class ParasitoRequest implements PromiseLike<ParasitoResponse> {
         }
     }
 
+    /**
+     * Executes the request when the builder is awaited or used as a promise.
+     *
+     * @param onfulfilled - Handler called with the normalized response.
+     * @param onrejected - Handler called when dispatch or expectations fail.
+     * @returns A promise-like value for the request result.
+     */
     public then<TResult1 = ParasitoResponse, TResult2 = never> (
         onfulfilled?: ((value: ParasitoResponse) => TResult1 | PromiseLike<TResult1>) | null,
         onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null,
@@ -216,6 +379,11 @@ export class ParasitoRequest implements PromiseLike<ParasitoResponse> {
         return this.run().then(onfulfilled, onrejected)
     }
 
+    /**
+     * Dispatches the request and evaluates registered expectations.
+     *
+     * @returns The normalized response after all expectations pass.
+     */
     private async run (): Promise<ParasitoResponse> {
         const response = await dispatch(this.app, this.state)
 

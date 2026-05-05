@@ -6,7 +6,17 @@ import { createUrl } from './fetch'
 import { normalizeSuperAgentResponse } from './response'
 import superagent from 'superagent'
 
-export async function requestWithServer (server: Server, state: RequestState): Promise<ParasitoResponse> {
+/**
+ * Sends a request to an already-listening server or starts it temporarily.
+ *
+ * @param server - HTTP server to send the request through.
+ * @param state - Internal request state to dispatch.
+ * @returns Normalized response from the server.
+ */
+export async function requestWithServer (
+    server: Server,
+    state: RequestState
+): Promise<ParasitoResponse> {
     if (server.listening) {
         const address = server.address()
 
@@ -18,7 +28,17 @@ export async function requestWithServer (server: Server, state: RequestState): P
     return requestWithTemporaryServer(server, state)
 }
 
-export async function requestWithTemporaryServer (server: Server, state: RequestState): Promise<ParasitoResponse> {
+/**
+ * Starts a server on an ephemeral port, sends the request, and closes it.
+ *
+ * @param server - HTTP server to start temporarily.
+ * @param state - Internal request state to dispatch.
+ * @returns Normalized response from the temporary server.
+ */
+export async function requestWithTemporaryServer (
+    server: Server,
+    state: RequestState
+): Promise<ParasitoResponse> {
     await new Promise<void>((resolve, reject) => {
         server.once('error', reject)
         server.listen(0, '127.0.0.1', () => {
@@ -46,7 +66,17 @@ export async function requestWithTemporaryServer (server: Server, state: Request
     }
 }
 
-export async function requestWithSuperAgent (baseUrl: string, state: RequestState): Promise<ParasitoResponse> {
+/**
+ * Sends a request to a remote or local base URL through SuperAgent.
+ *
+ * @param baseUrl - Base URL for the request.
+ * @param state - Internal request state to dispatch.
+ * @returns Normalized SuperAgent response.
+ */
+export async function requestWithSuperAgent (
+    baseUrl: string,
+    state: RequestState
+): Promise<ParasitoResponse> {
     const url = createUrl(baseUrl, state)
     let agentRequest = superagent(state.method, url)
 

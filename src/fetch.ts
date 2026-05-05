@@ -3,6 +3,12 @@ import type { Body, NodeHandler, RequestState } from './types'
 import { createServer } from 'node:http'
 import { isJsonBody } from './helpers'
 
+/**
+ * Creates a Fetch API Request from the internal request state.
+ *
+ * @param state - Internal request state to convert.
+ * @returns A Fetch API Request ready for fetch-style handlers.
+ */
 export function createFetchRequest (state: RequestState): Request {
     const url = createUrl('http://127.0.0.1', state)
     const init: RequestInit = {
@@ -17,6 +23,13 @@ export function createFetchRequest (state: RequestState): Request {
     return new Request(url, init)
 }
 
+/**
+ * Resolves a request path and query parameters against a base URL.
+ *
+ * @param baseUrl - Base URL to resolve relative request paths against.
+ * @param state - Internal request state containing the path and query string.
+ * @returns Fully resolved URL string.
+ */
 export function createUrl (baseUrl: string, state: RequestState): string {
     const url = new URL(state.path, baseUrl)
 
@@ -27,10 +40,22 @@ export function createUrl (baseUrl: string, state: RequestState): string {
     return url.toString()
 }
 
+/**
+ * Wraps a Node request handler in an HTTP server.
+ *
+ * @param handler - Node request handler to serve.
+ * @returns HTTP server for the provided handler.
+ */
 export function createNodeServer (handler: NodeHandler) {
     return createServer(handler)
 }
 
+/**
+ * Converts a request body into a Fetch-compatible body payload.
+ *
+ * @param body - Non-null request body to serialize.
+ * @returns Fetch-compatible body payload.
+ */
 function serializeFetchBody (body: Exclude<Body, null | undefined>): BodyInit {
     if (isJsonBody(body)) {
         return JSON.stringify(body)

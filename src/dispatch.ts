@@ -5,6 +5,13 @@ import { requestWithServer, requestWithSuperAgent, requestWithTemporaryServer } 
 
 import { normalizeFetchResponse } from './response'
 
+/**
+ * Routes a request state to the adapter that matches the provided app target.
+ *
+ * @param app - App target to dispatch against.
+ * @param state - Internal request state to dispatch.
+ * @returns Normalized response from the selected adapter.
+ */
 export async function dispatch (app: App, state: RequestState): Promise<ParasitoResponse> {
     if (isFetchApp(app)) {
         const response = await app.fetch(createFetchRequest(state))
