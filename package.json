@@ -1,6 +1,6 @@
 {
     "name": "parasito",
-    "version": "0.1.6",
+    "version": "0.1.7",
     "description": "Universal TypeScript-first HTTP testing library for Express, Fastify, H3, Hono, Node servers, and fetch-style apps.",
     "type": "module",
     "files": [
@@ -16,6 +16,7 @@
         },
         "./package.json": "./package.json"
     },
+    "license": "MIT",
     "homepage": "https://github.com/arkstack-hq/parasito",
     "repository": {
         "type": "git",
