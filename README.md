@@ -2,10 +2,10 @@
 
 [![NPM Downloads](https://img.shields.io/npm/dt/parasito.svg)](https://www.npmjs.com/package/parasito)
 [![npm version](https://img.shields.io/npm/v/parasito.svg)](https://www.npmjs.com/package/parasito)
-[![License](https://img.shields.io/npm/l/parasito.svg)](https://github.com/arkstack-hq/parasito/blob/main/LICENSE)
-[![codecov](https://codecov.io/gh/arkstack-hq/parasito/graph/badge.svg?token=ls1VVoFkYh)](https://codecov.io/gh/arkstack-hq/parasito)
-[![Test](https://github.com/arkstack-hq/parasito/actions/workflows/test.yml/badge.svg)](https://github.com/arkstack-hq/parasito/actions/workflows/test.yml)
-[![Publish to NPM](https://github.com/arkstack-hq/parasito/actions/workflows/publish.yml/badge.svg)](https://github.com/arkstack-hq/parasito/actions/workflows/publish.yml)
+[![License](https://img.shields.io/npm/l/parasito.svg)](https://github.com/arkstack-tmp/parasito/blob/main/LICENSE)
+[![codecov](https://codecov.io/gh/arkstack-tmp/parasito/graph/badge.svg?token=ls1VVoFkYh)](https://codecov.io/gh/arkstack-tmp/parasito)
+[![Test](https://github.com/arkstack-tmp/parasito/actions/workflows/test.yml/badge.svg)](https://github.com/arkstack-tmp/parasito/actions/workflows/test.yml)
+[![Publish to NPM](https://github.com/arkstack-tmp/parasito/actions/workflows/publish.yml/badge.svg)](https://github.com/arkstack-tmp/parasito/actions/workflows/publish.yml)
 
 Universal TypeScript-first HTTP testing library for Node applications.
 
