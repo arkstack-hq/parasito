@@ -32,7 +32,7 @@ jobs:
           cd test/arkstack-app
           pnpm install --ignore-workspace --no-frozen-lockfile
           pnpm prepare
-          ls -ah test/arkstack-app/.arkstack
+          ls -ah .arkstack
         env:
           APP_URL: http://localhost:3000
           APP_PORT: 3000
