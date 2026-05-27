@@ -34,10 +34,12 @@ jobs:
           pnpm install --ignore-workspace --no-frozen-lockfile
           pnpm prepare || echo "prepare failed with $?"
           find .arkstack -type f | sort || echo ".arkstack does not exist"
-        env:
-          APP_URL: http://localhost:3000
-          APP_PORT: 3000
-          NODE_ENV: production
+
+      - name: Prepare Arkstack
+        run: |
+          cd test/arkstack-app
+          pnpm prepare || echo "prepare failed with $?"
+          find .arkstack -type f | sort || echo ".arkstack does not exist"
 
       - name: Lint
         run: pnpm lint
@@ -49,6 +51,10 @@ jobs:
         run: pnpm build
 
       - name: Test
+        env:
+          APP_URL: http://localhost:3000
+          APP_PORT: 3000
+          NODE_ENV: production
         run: pnpm test:coverage
 
       - name: Upload coverage reports to Codecov
