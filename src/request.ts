@@ -336,6 +336,91 @@ export class PRequest<TBody = any> implements PromiseLike<PResponse<TBody>> {
     }
 
     /**
+     * Expects the response body or text to contain expected response body, text, or text pattern.
+     *
+     * @param expect - Expected response body, text, or text pattern.
+     * @returns The current request builder.
+     */
+    public contains (expected: string | RegExp): this {
+        this.expectations.push((response) => {
+            if (expected instanceof RegExp) {
+                if (!expected.test(response.text)) {
+                    throw new Error(
+                        `expected response text to contain ${String(expected).replace(/\//g, '')}`
+                    )
+                }
+
+                return
+            }
+
+            if (!response.text.includes(expected)) {
+                throw new Error(`expected response text to contain ${formatExpected(expected)}, got ${formatExpected(response.text)}`)
+            }
+
+            return
+        })
+
+        return this
+    }
+
+    /**
+     * Expects the response body or text to end with expected response body, text, or text pattern.
+     *
+     * @param expect - Expected response body, text, or text pattern.
+     * @returns The current request builder.
+     */
+    public endsWith (expected: string | RegExp): this {
+        this.expectations.push((response) => {
+            if (expected instanceof RegExp) {
+                const match = response.text.match(expected)
+                if (!match || response.text.slice(match.index! + match[0].length).trim() !== '') {
+                    throw new Error(
+                        `expected response text to end with ${String(expected).replace(/\//g, '')}`
+                    )
+                }
+
+                return
+            }
+
+            if (!response.text.trimEnd().endsWith(expected)) {
+                throw new Error(`expected response text to end with ${formatExpected(expected)}, got ${formatExpected(response.text)}`)
+            }
+
+            return
+        })
+
+        return this
+    }
+
+    /**
+     * Expects the response body or text to start with expected response body, text, or text pattern.
+     *
+     * @param expect - Expected response body, text, or text pattern.
+     * @returns The current request builder.
+     */
+    public startsWith (expected: string | RegExp): this {
+        this.expectations.push((response) => {
+            if (expected instanceof RegExp) {
+                if (!expected.test(response.text) || !response.text.trimStart().match(new RegExp(`^${expected.source}`, expected.flags))) {
+                    throw new Error(
+                        `expected response text to start with ${String(expected).replace(/\//g, '')}`
+                    )
+                }
+
+                return
+            }
+
+            if (!response.text.trimStart().startsWith(expected)) {
+                throw new Error(`expected response text to start with ${formatExpected(expected)}, got ${formatExpected(response.text)}`)
+            }
+
+            return
+        })
+
+        return this
+    }
+
+    /**
      * Executes the request and optionally reports completion through a callback.
      *
      * @param callback - Optional Node-style callback for completion.
