@@ -35,6 +35,20 @@ jobs:
           pnpm prepare || echo "prepare failed with $?"
           find .arkstack -type f | sort || echo ".arkstack does not exist"
 
+      - name: Prepare Arkstack
+        run: |
+          cat >> test/arkstack-app/src/routes/web.ts << 'EOF'
+
+          Router.get('/api', async ({ req }) => {
+            return {
+              title: 'Welcome to Arkstack',
+              message: 'Server running — ready for requests',
+              query: req.query
+            }
+          })
+          EOF
+          pnpm prepare || echo "prepare failed with $?"
+
       - name: Lint
         run: pnpm lint
 

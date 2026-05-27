@@ -11,7 +11,7 @@ describe('express', () => {
     it('tests arkstack apps through superagent-backed http requests', async () => {
         const { Arkstack } = await import('./arkstack-app/node_modules/@arkstack/contract/dist')
         Arkstack.setRootDir(arkstackRoot)
-        const { app } = await import(join(arkstackRoot, '.arkstack/build/core/bootstrap'))
+        const { app } = await import(('./arkstack-app/.arkstack/build/core/bootstrap'))
 
         app.setRootDir(arkstackRoot)
 
