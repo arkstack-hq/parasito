@@ -63,7 +63,6 @@ jobs:
         env:
           APP_URL: http://localhost:3000
           APP_PORT: 3000
-          # NODE_ENV: production
         run: pnpm test:coverage
 
       - name: Upload coverage reports to Codecov
