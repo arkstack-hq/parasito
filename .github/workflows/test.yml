@@ -47,6 +47,7 @@ jobs:
             }
           })
           EOF
+          cd test/arkstack-app
           pnpm prepare || echo "prepare failed with $?"
 
       - name: Lint
