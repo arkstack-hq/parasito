@@ -30,9 +30,10 @@ jobs:
         run: |
           pnpm install:arkstack
           cd test/arkstack-app
+          echo "CWD: $(pwd)"
           pnpm install --ignore-workspace --no-frozen-lockfile
-          pnpm prepare
-          ls -ah .arkstack
+          pnpm prepare || echo "prepare failed with $?"
+          ls -ah .arkstack || echo ".arkstack does not exist"
         env:
           APP_URL: http://localhost:3000
           APP_PORT: 3000
