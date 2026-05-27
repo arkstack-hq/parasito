@@ -1,7 +1,7 @@
 {
     "name": "parasito",
     "version": "0.2.1",
-    "description": "Universal TypeScript-first HTTP testing library for Express, Fastify, H3, Hono, Node servers, and fetch-style apps.",
+    "description": "Universal TypeScript-first HTTP testing library for Arkstack, Express, Fastify, H3, Hono, Node servers, and fetch-style apps.",
     "type": "module",
     "files": [
         "dist"
@@ -41,7 +41,13 @@
         "stubs",
         "http",
         "https",
-        "pest"
+        "pest",
+        "hono",
+        "koa",
+        "fetch",
+        "arkstack",
+        "fastify",
+        "express"
     ],
     "scripts": {
         "lint": "eslint",
