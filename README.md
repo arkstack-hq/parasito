@@ -207,6 +207,7 @@ await request(api)
 
 ```sh
 pnpm install
+pnpm install:arkstack
 pnpm lint
 pnpm typecheck
 pnpm test

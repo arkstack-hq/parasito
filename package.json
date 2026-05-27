@@ -55,7 +55,7 @@
         "docs:dev": "vitepress dev docs",
         "docs:build": "vitepress build docs",
         "docs:preview": "vitepress preview docs",
-        "arkstack:install": "pnpm create arkstack test/arkstack-app2 -n arkstack-app -d arkstack-app -k express -li"
+        "install:arkstack": "pnpm create arkstack test/arkstack-app -n arkstack-app -d arkstack-app -k express -li"
     },
     "dependencies": {
         "superagent": "^10.3.0"
