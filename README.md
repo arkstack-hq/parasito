@@ -9,7 +9,7 @@
 
 Universal TypeScript-first HTTP testing library for Node applications.
 
-Parasito attaches one request API to framework apps, Node servers, and fetch-style handlers. Use it to test Express, Fastify, H3, Hono, Koa, plain Node handlers, already-listening servers, or remote URLs with the same fluent assertions.
+Parasito attaches one request API to framework apps, Node servers, and fetch-style handlers. Use it to test Arkstack, Express, Fastify, H3, Hono, Koa, plain Node handlers, already-listening servers, or remote URLs with the same fluent assertions.
 
 ## Install
 
