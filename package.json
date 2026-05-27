@@ -1,6 +1,6 @@
 {
     "name": "parasito",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "description": "Universal TypeScript-first HTTP testing library for Express, Fastify, H3, Hono, Node servers, and fetch-style apps.",
     "type": "module",
     "files": [

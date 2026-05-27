@@ -34,6 +34,7 @@ await request(app).get('/account').expect(200).expect({ ok: true });
 
 ## Supported Targets
 
+- Arkstack Applications
 - Express and connect-style handlers
 - Fastify instances
 - H3 apps
