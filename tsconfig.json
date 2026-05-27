@@ -11,5 +11,6 @@
     "strict": true,
     "target": "es2022"
   },
-  "include": ["src", "test", "test/arkstack-app"]
+  "include": ["src", "test"],
+  "exclude": ["test/arkstack-app"]
 }

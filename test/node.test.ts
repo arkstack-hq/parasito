@@ -29,7 +29,7 @@ describe('node', () => {
             outgoing.end(JSON.stringify({ ok: true }))
         })
 
-        await request(server)
+        await request(server as never)
             .get('/health')
             .expect(200)
             .expect({ ok: true })

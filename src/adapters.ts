@@ -80,7 +80,7 @@ export async function requestWithSuperAgent<TBody = any> (
     const url = createUrl(baseUrl, state)
     let agentRequest = superagent(state.method, url)
 
-    for (const [field, value] of state.headers) {
+    for (const [field, value] of state.headers as any) {
         agentRequest = agentRequest.set(field, value)
     }
 

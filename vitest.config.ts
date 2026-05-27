@@ -1,4 +1,4 @@
-import { ViteUserConfig, defineConfig } from 'vitest/config'
+import { ViteUserConfig, defaultExclude, defineConfig } from 'vitest/config'
 
 export default defineConfig({
     resolve: {
@@ -11,6 +11,10 @@ export default defineConfig({
         passWithNoTests: true,
         environment: 'node',
         include: ['**/*.{test,spec}.?(c|m)[jt]s?(x)'],
+        exclude: [
+            ...defaultExclude,
+            '**/arkstack-*/**',
+        ],
         env: {
             NODE_ENV: 'test',
         },

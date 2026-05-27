@@ -57,7 +57,7 @@ export function normalizeSuperAgentResponse<TBody = any> (
 function headersToObject (headers: Headers): HeaderMap {
     const output: HeaderMap = {}
 
-    for (const [field, value] of headers) {
+    for (const [field, value] of headers as any) {
         output[field.toLowerCase()] = value
     }
 
