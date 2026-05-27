@@ -18,17 +18,27 @@ export interface KoaLike {
     callback: () => NodeHandler
 }
 
+export interface IsArkstack {
+    startup: (port?: number, dontStart?: boolean) => Promise<void>
+    getRouter: () => unknown
+    getAppInstance: () =>
+        | { fetch: FetchLike }
+        | FetchLike
+        | KoaLike
+        | FastifyLike
+        | NodeHandler
+}
+
 export type App =
     | string
     | URL
-    | Server
+    | Server[]
     | FastifyLike
     | KoaLike
     | NodeHandler
     | FetchLike
-    | {
-        fetch: FetchLike
-    }
+    | IsArkstack
+    | { fetch: FetchLike }
 
 export interface PResponse<TBody = any> {
     status: number

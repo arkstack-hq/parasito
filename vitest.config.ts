@@ -1,11 +1,12 @@
-import { defineConfig } from 'vitest/config'
-import tsconfigPaths from 'vite-tsconfig-paths'
+import { ViteUserConfig, defineConfig } from 'vitest/config'
 
 export default defineConfig({
-    plugins: [tsconfigPaths()],
+    resolve: {
+        tsconfigPaths: true,
+    } as ViteUserConfig['resolve'],
 
     test: {
-        retry: 10,
+        // retry: 10,
         root: './',
         passWithNoTests: true,
         environment: 'node',

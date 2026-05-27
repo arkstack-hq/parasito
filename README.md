@@ -71,6 +71,23 @@ Requests are promise-like, so you can `await` them directly. The resolved respon
 
 ## Examples
 
+### Arkstack
+
+When testing arkstack, Parasito taps into your app core, loads all registered routes, config and middleware, allowing you to test with full context awareness.
+
+```ts
+import { app } from '../src/core/bootstrap';
+
+await request(app)
+  .get('/api')
+  .set('Content-Type', 'application/json')
+  .expect(200)
+  .expect({
+    title: 'Welcome to Arkstack',
+    message: 'Server running — ready for requests',
+  });
+```
+
 ### H3
 
 ```ts

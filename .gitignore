@@ -151,3 +151,4 @@ docs/.vitepress/dist
 docs/.vitepress/cache
 
 /bin
+/test/arkstack-app

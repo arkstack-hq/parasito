@@ -1,6 +1,6 @@
 import type { App, NodeHandler, PResponse, RequestState } from './types'
 import { createFetchRequest, createNodeServer } from './fetch'
-import { isFastifyApp, isFetchApp, isKoaApp, isNodeHandler, isServer } from './guards'
+import { isArkstackApp, isFastifyApp, isFetchApp, isKoaApp, isNodeHandler, isServer } from './guards'
 import { requestWithServer, requestWithSuperAgent, requestWithTemporaryServer } from './adapters'
 
 import { normalizeFetchResponse } from './response'
@@ -30,6 +30,12 @@ export async function dispatch<TBody = any> (
 
     if (typeof app === 'string' || app instanceof URL) {
         return requestWithSuperAgent<TBody>(String(app), state)
+    }
+
+    if (isArkstackApp(app)) {
+        await app.startup(undefined, true)
+
+        return dispatch(app.getAppInstance(), state)
     }
 
     if (isFastifyApp(app)) {
