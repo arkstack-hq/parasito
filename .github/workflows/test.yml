@@ -32,7 +32,6 @@ jobs:
           cd test/arkstack-app
           echo "CWD: $(pwd)"
           pnpm install --ignore-workspace --no-frozen-lockfile
-          pnpm install @arkstack/auth --ignore-workspace
           pnpm prepare || echo "prepare failed with $?"
           find .arkstack -type f | sort || echo ".arkstack does not exist"
 
