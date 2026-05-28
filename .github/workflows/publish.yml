@@ -75,11 +75,11 @@ jobs:
 
       - name: Install Arkstack
         run: |
-          pnpm install:arkstack
+          NPM_CONFIG_IGNORE_SCRIPTS=true pnpm install:arkstack
           cd test/arkstack-app
           echo "CWD: $(pwd)"
-          pnpm install --ignore-workspace --no-frozen-lockfile
-          pnpm prepare || echo "prepare failed with $?"
+          pnpm install --ignore-workspace --no-frozen-lockfile --ignore-scripts
+          pnpm prepare
           find .arkstack -type f | sort || echo ".arkstack does not exist"
 
       - name: Prepare Arkstack
@@ -95,7 +95,7 @@ jobs:
           })
           EOF
           cd test/arkstack-app
-          pnpm prepare || echo "prepare failed with $?"
+          pnpm prepare
 
       - name: Set package version
         run: npm version "${{ steps.version.outputs.version }}" --no-git-tag-version --allow-same-version
