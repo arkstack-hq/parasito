@@ -17,6 +17,7 @@ export default defineConfig({
         ],
         env: {
             NODE_ENV: 'test',
+            VERBOSITY: '0'
         },
         coverage: {
             reporter: ['text', 'json', 'html', 'lcov'],
