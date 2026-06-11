@@ -69,4 +69,4 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          slug: arkstack-tmp/parasito
+          slug: arkstack-hq/parasito

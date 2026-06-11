@@ -17,10 +17,10 @@
         "./package.json": "./package.json"
     },
     "license": "MIT",
-    "homepage": "https://github.com/arkstack-tmp/parasito",
+    "homepage": "https://github.com/arkstack-hq/parasito",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/arkstack-tmp/parasito.git"
+        "url": "git+https://github.com/arkstack-hq/parasito.git"
     },
     "keywords": [
         "testing",
