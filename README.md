@@ -70,6 +70,31 @@ Requests are promise-like, so you can `await` them directly. The resolved respon
 - `body`
 - `raw`
 
+### Request Bodies
+
+`send()` picks a default `content-type` from the body when you do not set one yourself:
+
+| Body                | Content type                        |
+| ------------------- | ----------------------------------- |
+| Object or array     | `application/json`                  |
+| `URLSearchParams`   | `application/x-www-form-urlencoded` |
+| `FormData`          | `multipart/form-data` (with boundary) |
+| `string`            | `text/plain`                        |
+
+```ts
+await request(app)
+  .post('/login')
+  .send(new URLSearchParams({ email: 'ada@example.com', password: 'secret' }));
+
+const form = new FormData();
+form.set('avatar', new Blob(['…']), 'avatar.png');
+await request(app).post('/profile').send(form);
+
+await request(app).post('/notes').send('plain text note');
+```
+
+Set `content-type` explicitly with `set()` before `send()` to override the default. Responses sent as `application/x-www-form-urlencoded` are parsed into an object on `response.body`.
+
 ## Examples
 
 ### Arkstack

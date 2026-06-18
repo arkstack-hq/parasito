@@ -1,8 +1,7 @@
 import type { App, Body, Expectation, HeaderValue, Method, PResponse, RequestState } from './types'
-import { formatExpected, isJsonBody, matches } from './helpers'
+import { formatExpected, matches, resolveContentType } from './helpers'
 
 import { dispatch } from './dispatch'
-import { jsonContentType } from './constants'
 
 /**
  * Creates a new request builder for an application, server, handler, or remote URL.
@@ -226,7 +225,12 @@ export class PRequest<TBody = any> implements PromiseLike<PResponse<TBody>> {
     }
 
     /**
-     * Sets the request body and applies a JSON content type for plain objects and arrays.
+     * Sets the request body and applies a default content type when one is not
+     * already set.
+     *
+     * Plain objects and arrays default to JSON, URLSearchParams to form
+     * urlencoded, and strings to plain text. FormData is left untouched so the
+     * underlying engine can generate the multipart boundary.
      *
      * @param body - Request body payload to send.
      * @returns The current request builder.
@@ -234,8 +238,12 @@ export class PRequest<TBody = any> implements PromiseLike<PResponse<TBody>> {
     public send (body: Body): this {
         this.state.body = body
 
-        if (isJsonBody(body) && !this.state.headers.has('content-type')) {
-            this.state.headers.set('content-type', jsonContentType)
+        if (!this.state.headers.has('content-type')) {
+            const contentType = resolveContentType(body)
+
+            if (contentType !== undefined) {
+                this.state.headers.set('content-type', contentType)
+            }
         }
 
         return this

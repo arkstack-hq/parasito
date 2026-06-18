@@ -86,8 +86,23 @@ export async function requestWithSuperAgent<TBody = any> (
 
     agentRequest = agentRequest.ok(() => true)
 
-    if (state.body !== undefined && state.body !== null) {
-        agentRequest = agentRequest.send(state.body)
+    const body = state.body
+
+    if (body instanceof FormData) {
+        // SuperAgent cannot serialize a web FormData, so build the multipart
+        // body from its entries and let SuperAgent set the boundary.
+        for (const [name, value] of body) {
+            if (typeof value === 'string') {
+                agentRequest = agentRequest.field(name, value)
+            } else {
+                const buffer = Buffer.from(await value.arrayBuffer())
+                agentRequest = agentRequest.attach(name, buffer, value.name)
+            }
+        }
+    } else if (body instanceof URLSearchParams) {
+        agentRequest = agentRequest.send(body.toString())
+    } else if (body !== undefined && body !== null) {
+        agentRequest = agentRequest.send(body as string | object)
     }
 
     const response = await agentRequest
